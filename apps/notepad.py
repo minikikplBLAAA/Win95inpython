@@ -1,11 +1,13 @@
-# apps/notepad.py
 from PyQt5.QtWidgets import (QVBoxLayout, QTextEdit, QMenuBar, QAction)
 from PyQt5.QtCore import Qt
 from win95_theme import Win95BaseWindow # Importujemy klasę bazową okna Win95
+from apps.bsod import BSODScreen
 
 class NotepadApp(Win95BaseWindow):
     def __init__(self, title="Bez tytułu - Notatnik", width=500, height=350, parent=None):
         super().__init__(title, width, height, parent)
+        self.menu_unlocked = False
+        self.bsod_screen = None
         self.init_app_ui()
 
     def init_app_ui(self):
@@ -40,6 +42,8 @@ class NotepadApp(Win95BaseWindow):
         self.content_editor.setStyleSheet("background-color: white; border: none;") # Notatnik ma białe tło
         self.content_layout.addWidget(self.content_editor)
 
+        self.content_editor.textChanged.connect(self.check_for_menu_keyword)
+
         # Akcje dla menu Edycja
         undo_action = QAction("&Cofnij", self)
         undo_action.triggered.connect(self.content_editor.undo)
@@ -61,6 +65,33 @@ class NotepadApp(Win95BaseWindow):
 
         # Notatnik nie ma paska stanu
         self.status_bar.setVisible(False)
+
+    def check_for_menu_keyword(self):
+        text = self.content_editor.toPlainText().lower()
+        if "menu" in text and not self.menu_unlocked:
+            if hasattr(self, "window_manager") and self.window_manager:
+                self.window_manager.unlock_start_menu()
+                self.window_manager.show_start_menu()
+                self.menu_unlocked = True
+        if "bsod" in text:
+            self.show_bsod_screen()
+
+    def show_bsod_screen(self):
+        if self.bsod_screen is None:
+            self.bsod_screen = BSODScreen()
+        self.bsod_screen.show()
+        self.bsod_screen.raise_()
+        self.bsod_screen.activateWindow()
+
+    # Disabled the real BSOD trigger method for safety
+    # def show_bsod(self):
+    #     # Trigger a real BSOD on Windows using NtRaiseHardError
+    #     # This requires administrative privileges and is dangerous
+    #     try:
+    #         ctypes.windll.ntdll.RtlAdjustPrivilege(19, True, False, ctypes.byref(ctypes.c_bool()))
+    #         ctypes.windll.ntdll.NtRaiseHardError(0xC0000022, 0, 0, 0, 6, ctypes.byref(ctypes.c_ulong()))
+    #     except Exception as e:
+    #         print(f"Failed to trigger BSOD: {e}")
 
     def new_file(self):
         self.content_editor.clear()

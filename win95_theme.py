@@ -124,6 +124,50 @@ def get_generated_icon(name, size=32):
         return QIcon(generate_icon_pixmap("Prn", (220, 220, 220), (0,0,0), "square", size))
     elif name == "network":
         return QIcon(generate_icon_pixmap("Net", (180, 255, 180), (0,0,0), "square", size))
+    elif name == "internet_connected":
+        # Draw a simple green circle with a check mark
+        size = size
+        from PIL import Image, ImageDraw, ImageFont
+        img = Image.new('RGBA', (size, size), (0,0,0,0))
+        draw = ImageDraw.Draw(img)
+        draw.ellipse((0, 0, size-1, size-1), fill=(0, 180, 0, 255))
+        # Draw check mark
+        try:
+            font = ImageFont.truetype("arial.ttf", int(size * 0.7))
+        except IOError:
+            font = ImageFont.load_default()
+        text = "✓"
+        text_bbox = draw.textbbox((0,0), text, font=font)
+        text_x = (size - (text_bbox[2] - text_bbox[0])) / 2
+        text_y = (size - (text_bbox[3] - text_bbox[1])) / 2 - 1
+        draw.text((text_x, text_y), text, font=font, fill=(255,255,255,255))
+        byte_array = io.BytesIO()
+        img.save(byte_array, format='PNG')
+        byte_array.seek(0)
+        q_image = QImage.fromData(byte_array.read())
+        return QIcon(QPixmap.fromImage(q_image))
+    elif name == "internet_disconnected":
+        # Draw a red circle with an X mark
+        size = size
+        from PIL import Image, ImageDraw, ImageFont
+        img = Image.new('RGBA', (size, size), (0,0,0,0))
+        draw = ImageDraw.Draw(img)
+        draw.ellipse((0, 0, size-1, size-1), fill=(180, 0, 0, 255))
+        # Draw X mark
+        try:
+            font = ImageFont.truetype("arial.ttf", int(size * 0.7))
+        except IOError:
+            font = ImageFont.load_default()
+        text = "✗"
+        text_bbox = draw.textbbox((0,0), text, font=font)
+        text_x = (size - (text_bbox[2] - text_bbox[0])) / 2
+        text_y = (size - (text_bbox[3] - text_bbox[1])) / 2 - 1
+        draw.text((text_x, text_y), text, font=font, fill=(255,255,255,255))
+        byte_array = io.BytesIO()
+        img.save(byte_array, format='PNG')
+        byte_array.seek(0)
+        q_image = QImage.fromData(byte_array.read())
+        return QIcon(QPixmap.fromImage(q_image))
     elif name == "back_arrow":
         return QIcon(generate_icon_pixmap("<", (220,220,220), (0,0,0), "square", size))
     elif name == "forward_arrow":
