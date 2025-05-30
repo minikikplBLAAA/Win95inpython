@@ -13,7 +13,7 @@ class BrowserApp(Win95BaseWindow):
     def init_browser_ui(self):
         # WebView
         self.webview = QWebEngineView()
-        self.webview.setUrl(QUrl("https://example.com"))
+        self.webview.setUrl(QUrl("https://google.com"))
         self.content_layout.addWidget(self.webview)
 
         # Pasek narzędzi
