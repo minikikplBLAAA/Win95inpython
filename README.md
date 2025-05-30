@@ -9,6 +9,7 @@ This project is a Windows 95 style desktop environment application built with Py
 - Multiple apps: Calculator, Notepad, Paint, Explorer
 - Sound effects using pygame
 - Easy to run and package as an executable
+- has its own browser
 
 ## Running the Application
 
