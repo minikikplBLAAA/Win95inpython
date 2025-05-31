@@ -1,22 +1,21 @@
 # Win95 Style Python Application
 
-This project is a Windows 95 style desktop environment application built with Python and PyQt5. It includes several classic apps such as Calculator, Notepad, Paint, and Explorer, all styled to mimic the Windows 95 look and feel.
+This project is a Windows 95 style desktop environment application built with Python and PyQt5. It includes several classic apps such as Calculator, Notepad, Paint, Explorer, Pomidor, and a custom-built Browser, all styled to mimic the Windows 95 look and feel.
 
 ## Features
 
 - Windows 95 style UI with custom window frames and controls
 - Dynamically generated colorful icons using Pillow
-- Multiple apps: Calculator, Notepad, Paint, Explorer
+- Multiple apps: Calculator, Notepad, Paint, Explorer, Pomidor, and a custom-built Browser
 - Sound effects using pygame
 - Easy to run and package as an executable
-- has its own browser
 
 ## Running the Application
 
 1. Ensure you have Python 3.7+ installed.
 2. Install required dependencies:
    ```
-   pip install PyQt5 pygame Pillow
+   pip install PyQt5 pygame Pillow PyQtWebEngine
    ```
 3. Run the main application:
    ```
@@ -47,6 +46,7 @@ To create a Windows executable using PyInstaller:
 - Icons are generated dynamically; no external icon files are required.
 - Sound effects require pygame mixer to be initialized properly.
 - The app is designed for Windows but may run on other platforms with PyQt5 support.
+- The Pomidor game is integrated as an app within the simulator, running inside the simulator window.
 
 ## License
 
